@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 public class Operator extends Node {
 
     public enum Type {
-        SUM('+', a -> a[0] + a[1]),
-        SUBTRACTION('-', a -> a[0] - a[1]),
-        MULTIPLICATION('*', a -> a[0] * a[1]),
-        DIVISION('/', a -> a[0] / a[1]),
-        POWER('^', a -> Math.pow(a[0], a[1]));
+        SUM('+', a -> a.get(0) + a.get(1)),
+        SUBTRACTION('-', a -> a.get(0) - a.get(1)),
+        MULTIPLICATION('*', a -> a.get(0) * a.get(1)),
+        DIVISION('/', a -> a.get(0) / a.get(1)),
+        POWER('^', a -> Math.pow(a.get(0), a.get(1)));
         private final char symbol;
-        private final Function<double[], Double> function;
+        private final Function<List<Double>, Double> function;
 
-        Type(char symbol, Function<double[], Double> function) {
+        Type(char symbol, Function<List<Double>, Double> function) {
             this.symbol = symbol;
             this.function = function;
         }
@@ -25,7 +25,7 @@ public class Operator extends Node {
             return symbol;
         }
 
-        public Function<double[], Double> getFunction() {
+        public Function<List<Double>, Double> getFunction() {
             return function;
         }
     }
