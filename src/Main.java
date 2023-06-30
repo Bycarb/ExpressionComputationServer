@@ -4,7 +4,6 @@ import Parser.Operator;
 import Parser.Variable;
 import Parser.Constant;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +44,12 @@ public class Main {
         }
 
         if (expression instanceof Operator) {
-            Function function = ((Operator) expression).getType().getFunction();
-            double[] children = new double[2];
-            for (int i = 0; i < children.length; i++) {
-                children[i] = compute(expression.getChildren().get(i), values);
+            Function<List<Double>, Double> function = ((Operator) expression).getType().getFunction();
+            List<Double> children = new ArrayList<>();
+            for (Node child : expression.getChildren()) {
+                children.add(compute(child, values));
             }
-            return (Double) function.apply(children);
+            return function.apply(children);
         }
 
         throw new RuntimeException("Unknown Node instance"); //TODO: fix this shit
