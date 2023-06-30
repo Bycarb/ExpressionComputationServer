@@ -1,0 +1,10 @@
+/out/production/ExpressionComputationServer/Parser/Constant.class
+/out/production/ExpressionComputationServer/InvalidVariableException.class
+/out/production/ExpressionComputationServer/Main.class
+/out/production/ExpressionComputationServer/Parser/Node.class
+/out/production/ExpressionComputationServer/Parser/Operator$Type.class
+/out/production/ExpressionComputationServer/Parser/Operator.class
+/out/production/ExpressionComputationServer/Parser/Parser$Token.class
+/out/production/ExpressionComputationServer/Parser/Parser$TokenType.class
+/out/production/ExpressionComputationServer/Parser/Parser.class
+/out/production/ExpressionComputationServer/Parser/Variable.class
