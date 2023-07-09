@@ -1,4 +1,4 @@
-package Parser;
+package Requests.Computation.Expression;
 
 import java.util.List;
 import java.util.Objects;
@@ -56,11 +56,10 @@ public class Operator extends Node {
 
     @Override
     public String toString() {
-        String sb = "(" +
+        return "(" +
                 getChildren().stream()
                         .map(Node::toString)
-                        .collect(Collectors.joining(" " + Character.toString(type.symbol) + " "))
+                        .collect(Collectors.joining(" " + type.symbol + " "))
                 + ")";
-        return sb;
     }
 }
