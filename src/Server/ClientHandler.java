@@ -1,27 +1,28 @@
 package Server;
 
+import Requests.ComputationRequest;
 import Requests.QuitRequest;
 import Requests.Request;
 import Requests.RequestBuilder;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 
 public class ClientHandler extends Thread {
     private final Socket socket;
-    private final Semaphore coresLimitSemaphore;
+    private final ExecutorService executorService;
     private final ComputationServer server;
 
-    public ClientHandler(Socket socket, Semaphore coresLimitSemaphore, ComputationServer server) {
+    public ClientHandler(Socket socket, ExecutorService executorService, ComputationServer server) {
         this.socket = socket;
-        this.coresLimitSemaphore = coresLimitSemaphore;
+        this.executorService = executorService;
         this.server = server;
     }
 
     public void run() {
         log("Thread created. Connecting with " + socket.getInetAddress() + ":" + socket.getPort());
-        boolean semaphoreAcquired = false;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -29,19 +30,22 @@ public class ClientHandler extends Thread {
                 String line = br.readLine();
                 long starTime = System.currentTimeMillis();
 
-                coresLimitSemaphore.acquire();
-                semaphoreAcquired = true;
-
                 String response;
                 try {
                     if (line == null || line.isEmpty() || line.isBlank()) {
                         throw new IllegalArgumentException("Provided empty line.");
                     }
                     Request request = (new RequestBuilder(line, server)).getRequest();
+
+                    String result;
                     if (request instanceof QuitRequest) {
                         break;
+                    } else  if (request instanceof ComputationRequest) {
+                        result = executorService.submit(request).get();
+                    } else{
+                        result = request.call();
                     }
-                    String result = request.processRequest();
+
                     double elapsedTimeSeconds = ((double) (System.currentTimeMillis() - starTime)) / 1000;
                     String elapsedTimeString = String.format("%.3f;", elapsedTimeSeconds);
                     response = "OK;"
@@ -54,16 +58,11 @@ public class ClientHandler extends Thread {
                 }
                 bw.write(response + System.lineSeparator());
                 bw.flush();
-
-                coresLimitSemaphore.release();
-                semaphoreAcquired = false;
             }
-        } catch (IOException | InterruptedException | OutOfMemoryError e) {
+        } catch (IOException | InterruptedException | OutOfMemoryError | ExecutionException e) {
             log("Error: " + e.getMessage());
             e.printStackTrace();
-            if (semaphoreAcquired) {
-                coresLimitSemaphore.release();
-            }
+//            }
         } finally {
             try {
                 socket.close();

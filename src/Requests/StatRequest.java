@@ -15,14 +15,14 @@ public class StatRequest implements Request {
     }
 
     @Override
-    public String processRequest() {
-        if(request.equals(NUMBER_OF_REQUESTS)) {
+    public String call() {
+        if (request.equals(NUMBER_OF_REQUESTS)) {
             return String.format("%d", server.getRequestsServed());
         }
-        if(request.equals(AVG_TIME)) {
+        if (request.equals(AVG_TIME)) {
             return String.format("%.3f", server.getAVGRequestTime());
         }
-        if(request.equals(MAX_TIME)) {
+        if (request.equals(MAX_TIME)) {
             return String.format("%.3f", server.getMAXRequestTime());
         }
         //should never reach here. If it does, there's a problem with the code

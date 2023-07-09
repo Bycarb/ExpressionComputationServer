@@ -6,7 +6,7 @@ public class QuitRequest implements Request {
     }
 
     @Override
-    public String processRequest() {
+    public String call() {
         return null;
     }
 }

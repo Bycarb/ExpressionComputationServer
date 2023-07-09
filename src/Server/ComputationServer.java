@@ -8,17 +8,18 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ComputationServer {
     private final int port;
     private final List<Double> requestsTimeRecord;
-    private final Semaphore coresLimitSemaphore;
+    private final ExecutorService executorService;
 
     public ComputationServer(int port) {
         this.port = port;
         requestsTimeRecord = new LinkedList<>();
-        coresLimitSemaphore = new Semaphore(Runtime.getRuntime().availableProcessors());
+        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     public void run() {
@@ -29,7 +30,7 @@ public class ComputationServer {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
-                    ClientHandler clientHandler = new ClientHandler(socket, coresLimitSemaphore, this);
+                    ClientHandler clientHandler = new ClientHandler(socket, executorService, this);
                     clientHandler.start();
                 } catch (IOException e) {
                     System.out.println("ERROR: error establishing new connection.\n" + e.getMessage());

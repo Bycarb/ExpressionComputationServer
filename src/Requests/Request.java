@@ -1,5 +1,7 @@
 package Requests;
 
-public interface Request {
-    String processRequest();
+import java.util.concurrent.Callable;
+
+public interface Request extends Callable<String> {
+    String call();
 }

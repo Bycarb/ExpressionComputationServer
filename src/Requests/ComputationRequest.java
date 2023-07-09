@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class ComputationRequest implements Request {
 
     private final ComputationKind computationKind;
-    private final List<Map<String, Double>> tuples;
     private final List<Node> expressions;
+    private final ValuesParser tuplesParser; //differently from expressions, the tuples list is not evaluated in the constructor because it can be computationally heavy
 
     public ComputationRequest(String request) throws IllegalArgumentException {
 
@@ -46,7 +46,7 @@ public class ComputationRequest implements Request {
             default -> throw new IllegalArgumentException("Invalid value kind. Accepted value kinds are: LIST, GRID");
         };
 
-        tuples = (new ValuesParser(tokens[1], valuesKind)).getTuples();
+        tuplesParser = new ValuesParser(tokens[1], valuesKind);
 
         expressions = Arrays.stream(tokens, 2, tokens.length)
                 .map(token -> (new ExpressionParser(token)).parseExpression())
@@ -55,7 +55,9 @@ public class ComputationRequest implements Request {
 
 
     @Override
-    public String processRequest() {
+    public String call() {
+        List<Map<String, Double>> tuples = (tuplesParser).getTuples();
+
         if (computationKind == ComputationKind.MIN) {
             if (tuples.size() == 0) {
                 throw new IllegalArgumentException("Impossible to calculate MIN. The provided intervals generated zero valid tuples of values.");
@@ -102,7 +104,7 @@ public class ComputationRequest implements Request {
             return String.format("%.6f", result);
         }
         if (computationKind == ComputationKind.COUNT) {
-            return String.format("%.6f", (double)tuples.size());
+            return String.format("%.6f", (double) tuples.size());
         }
 
         throw new EnumConstantNotPresentException(computationKind.getClass(), computationKind.toString());

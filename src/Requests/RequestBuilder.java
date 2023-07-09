@@ -13,7 +13,7 @@ public class RequestBuilder {
         this.server = server;
     }
 
-    public Request getRequest(){
+    public Request getRequest() {
         return switch (request) {
             case "BYE" -> new QuitRequest();
             case NUMBER_OF_REQUESTS, AVG_TIME, MAX_TIME -> new StatRequest(request, server);
