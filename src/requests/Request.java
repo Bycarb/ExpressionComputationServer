@@ -1,4 +1,4 @@
-package Requests;
+package requests;
 
 import java.util.concurrent.Callable;
 

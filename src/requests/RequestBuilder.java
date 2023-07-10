@@ -1,8 +1,8 @@
-package Requests;
+package requests;
 
-import Server.ComputationServer;
+import server.ComputationServer;
 
-import static Requests.StatRequest.*;
+import static requests.StatRequest.*;
 
 public class RequestBuilder {
     private final String request;

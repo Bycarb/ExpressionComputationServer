@@ -1,4 +1,4 @@
-import Server.ComputationServer;
+import server.ComputationServer;
 
 public class Main {
     private static final int DEFAULT_PORT = 10000;

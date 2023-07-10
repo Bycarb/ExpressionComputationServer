@@ -1,6 +1,6 @@
-package Requests;
+package requests;
 
-import Server.ComputationServer;
+import server.ComputationServer;
 
 public class StatRequest implements Request {
     public static final String NUMBER_OF_REQUESTS = "STAT_REQS";

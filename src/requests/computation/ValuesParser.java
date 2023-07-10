@@ -1,6 +1,6 @@
-package Requests.Computation;
+package requests.computation;
 
-import Requests.Computation.Expression.ExpressionParser;
+import requests.computation.expression.ExpressionParser;
 
 import java.util.*;
 import java.util.regex.Pattern;

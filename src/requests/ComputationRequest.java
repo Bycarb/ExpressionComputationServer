@@ -1,9 +1,9 @@
-package Requests;
+package requests;
 
-import Requests.Computation.ComputationKind;
-import Requests.Computation.Expression.*;
-import Requests.Computation.ValuesKind;
-import Requests.Computation.ValuesParser;
+import requests.computation.ComputationKind;
+import requests.computation.expression.*;
+import requests.computation.ValuesKind;
+import requests.computation.ValuesParser;
 
 import java.util.Arrays;
 import java.util.List;

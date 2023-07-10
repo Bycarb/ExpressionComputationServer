@@ -1,4 +1,4 @@
-package Requests;
+package requests;
 
 public class QuitRequest implements Request {
     public QuitRequest() {

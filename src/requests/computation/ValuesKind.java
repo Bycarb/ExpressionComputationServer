@@ -1,4 +1,4 @@
-package Requests.Computation;
+package requests.computation;
 
 public enum ValuesKind {
     GRID, LIST

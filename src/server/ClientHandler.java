@@ -1,9 +1,9 @@
-package Server;
+package server;
 
-import Requests.ComputationRequest;
-import Requests.QuitRequest;
-import Requests.Request;
-import Requests.RequestBuilder;
+import requests.ComputationRequest;
+import requests.QuitRequest;
+import requests.Request;
+import requests.RequestBuilder;
 
 import java.io.*;
 import java.net.Socket;
@@ -62,7 +62,6 @@ public class ClientHandler extends Thread {
         } catch (IOException | InterruptedException | OutOfMemoryError | ExecutionException e) {
             log("Error: " + e.getMessage());
             e.printStackTrace();
-//            }
         } finally {
             try {
                 socket.close();
